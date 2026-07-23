@@ -2,3 +2,12 @@
 *.cnf 
 .env
 config.local.*
+
+#Volcados y respaldos pesados
+*.dump
+backup/
+*.sql.gz
+
+# DBeaver
+.dbeaver/
+.metadata/
