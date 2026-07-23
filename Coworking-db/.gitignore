@@ -1,0 +1,4 @@
+#Credenciales y configuracion local - no mostrar contraseñas al repositorio
+*.cnf 
+.env
+config.local.*
