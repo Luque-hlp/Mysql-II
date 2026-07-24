@@ -1,5 +1,6 @@
 {
     "conventionalCommits.scopes": [
-        "Create Archives"
+        "Create Archives",
+        "Creacion de tablas e insertacion de tablas"
     ]
 }
