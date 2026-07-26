@@ -38,6 +38,17 @@ BEGIN
         VALUES (v_id_usuario, p_codigo, v_tipo, p_mensaje);
 
     ELSE
+        -- Requisito trigger 19: si el usuario ya tenia una entrada
+        -- abierta (sin salida), se le cierra automaticamente ANTES de
+        -- registrar la nueva. Esto va aqui, en el procedimiento, y no en
+        -- un trigger sobre 'accesos', porque MySQL prohibe que un trigger
+        -- de una tabla modifique esa misma tabla (error 1442).
+        UPDATE accesos
+        SET fecha_hora_salida = NOW()
+        WHERE id_usuario = v_id_usuario
+          AND resultado  = 'Permitido'
+          AND fecha_hora_salida IS NULL;
+
         SELECT id_credencial, tipo INTO v_id_cred, v_tipo
         FROM credenciales WHERE codigo = p_codigo LIMIT 1;
         INSERT INTO accesos (id_usuario, id_credencial, tipo_credencial,
@@ -49,6 +60,12 @@ BEGIN
 END $$
 DELIMITER ;
 
+
+-- ---------------------------------------------------------------------
+-- 15. sp_registrar_salida
+--     Marca la hora de salida en el ultimo acceso abierto del usuario
+--     (el que tiene fecha_hora_salida en NULL).
+-- ---------------------------------------------------------------------
 DROP PROCEDURE IF EXISTS sp_registrar_salida;
 DELIMITER $$
 CREATE PROCEDURE sp_registrar_salida(
@@ -76,6 +93,7 @@ BEGIN
     END IF;
 END $$
 DELIMITER ;
+
 
 DROP PROCEDURE IF EXISTS sp_reporte_diario_asistencias;
 DELIMITER $$
@@ -108,13 +126,6 @@ BEGIN
 END $$
 DELIMITER ;
 
-
--- ---------------------------------------------------------------------
--- 17. sp_marcar_no_show
---     Detecta reservas confirmadas cuya hora de fin ya paso y que NO
---     registraron ningun acceso del usuario ese dia. Las marca 'No Show'
---     y genera una penalizacion del 30% del monto.
--- ---------------------------------------------------------------------
 DROP PROCEDURE IF EXISTS sp_marcar_no_show;
 DELIMITER $$
 CREATE PROCEDURE sp_marcar_no_show(
