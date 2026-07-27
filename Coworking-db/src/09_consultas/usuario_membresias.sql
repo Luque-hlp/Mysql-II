@@ -79,3 +79,12 @@ ORDER BY reservas_mes DESC;
 -- 11. Calcular el promedio de edad de los usuarios.
 SELECT ROUND(AVG(TIMESTAMPDIFF(YEAR, fecha_nacimiento, CURDATE())), 1) AS edad_promedio
 FROM usuarios;
+
+-- 12. Listar usuarios que han cambiado de membresia mas de 2 veces.
+SELECT u.id_usuario, u.nombre, u.apellidos,
+       COUNT(DISTINCT m.id_tipo_membresia) AS tipos_distintos
+FROM usuarios u
+INNER JOIN membresias m ON m.id_usuario = u.id_usuario
+GROUP BY u.id_usuario, u.nombre, u.apellidos
+HAVING COUNT(DISTINCT m.id_tipo_membresia) > 2
+ORDER BY tipos_distintos DESC;
