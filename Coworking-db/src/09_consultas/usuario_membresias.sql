@@ -45,3 +45,10 @@ FROM usuarios
 ORDER BY fecha_registro ASC
 LIMIT 10;
 
+-- 7. Listar usuarios que pertenecen a una empresa especifica (ejemplo: empresa 1).
+SELECT u.id_usuario, u.nombre, u.apellidos, e.nombre AS empresa
+FROM usuarios u
+INNER JOIN empresas e ON e.id_empresa = u.id_empresa
+WHERE e.id_empresa = 1
+ORDER BY u.apellidos;
+
