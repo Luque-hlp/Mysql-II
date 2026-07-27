@@ -30,3 +30,10 @@ FROM usuarios u
 INNER JOIN membresias m ON m.id_usuario = u.id_usuario
 WHERE m.estado = 'Suspendida'
 ORDER BY u.apellidos;
+
+-- 5. Contar cuantos usuarios tienen cada tipo de membresia.
+SELECT tm.nombre AS tipo_membresia, COUNT(DISTINCT m.id_usuario) AS total_usuarios
+FROM tipos_membresia tm
+LEFT JOIN membresias m ON m.id_tipo_membresia = tm.id_tipo_membresia
+GROUP BY tm.id_tipo_membresia, tm.nombre
+ORDER BY total_usuarios DESC;
