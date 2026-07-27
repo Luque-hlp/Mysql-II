@@ -75,3 +75,7 @@ WHERE r.estado IN ('Pendiente', 'Confirmada')
 GROUP BY u.id_usuario, u.nombre, u.apellidos
 HAVING COUNT(r.id_reserva) > 5
 ORDER BY reservas_mes DESC;
+
+-- 11. Calcular el promedio de edad de los usuarios.
+SELECT ROUND(AVG(TIMESTAMPDIFF(YEAR, fecha_nacimiento, CURDATE())), 1) AS edad_promedio
+FROM usuarios;
