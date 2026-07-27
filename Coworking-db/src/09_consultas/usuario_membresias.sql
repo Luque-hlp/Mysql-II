@@ -23,3 +23,10 @@ FROM usuarios u
 INNER JOIN membresias m ON m.id_usuario = u.id_usuario
 WHERE m.estado = 'Vencida'
 ORDER BY m.fecha_fin DESC;
+
+-- 4. Listar los usuarios con membresia suspendida.
+SELECT DISTINCT u.id_usuario, u.nombre, u.apellidos
+FROM usuarios u
+INNER JOIN membresias m ON m.id_usuario = u.id_usuario
+WHERE m.estado = 'Suspendida'
+ORDER BY u.apellidos;
