@@ -97,3 +97,41 @@ WHERE r.estado IN ('Confirmada', 'Completada')
 GROUP BY u.id_usuario, u.nombre, u.apellidos
 HAVING SUM(r.monto_total) > 500000
 ORDER BY gasto_reservas DESC;
+
+-- 14. Mostrar usuarios que tienen tanto membresia como servicios adicionales.
+SELECT DISTINCT u.id_usuario, u.nombre, u.apellidos
+FROM usuarios u
+INNER JOIN membresias m           ON m.id_usuario = u.id_usuario
+INNER JOIN servicios_contratados sc ON sc.id_usuario = u.id_usuario
+ORDER BY u.id_usuario;
+ 
+-- 15. Listar usuarios con membresia Premium y reservas activas.
+SELECT DISTINCT u.id_usuario, u.nombre, u.apellidos
+FROM usuarios u
+INNER JOIN membresias m  ON m.id_usuario = u.id_usuario
+INNER JOIN tipos_membresia tm ON tm.id_tipo_membresia = m.id_tipo_membresia
+INNER JOIN reservas r    ON r.id_usuario = u.id_usuario
+WHERE tm.nombre = 'Premium'
+  AND m.estado = 'Activa'
+  AND r.estado IN ('Pendiente', 'Confirmada')
+ORDER BY u.id_usuario;
+ 
+-- 16. Mostrar usuarios con membresia Corporativa y su empresa.
+SELECT u.id_usuario, u.nombre, u.apellidos, e.nombre AS empresa
+FROM usuarios u
+INNER JOIN membresias m  ON m.id_usuario = u.id_usuario
+INNER JOIN tipos_membresia tm ON tm.id_tipo_membresia = m.id_tipo_membresia
+INNER JOIN empresas e    ON e.id_empresa = u.id_empresa
+WHERE tm.nombre = 'Corporativa'
+GROUP BY u.id_usuario, u.nombre, u.apellidos, e.nombre
+ORDER BY e.nombre;
+ 
+-- 17. Identificar usuarios con membresia diaria renovada mas de 10 veces.
+SELECT u.id_usuario, u.nombre, u.apellidos, COUNT(*) AS veces
+FROM usuarios u
+INNER JOIN membresias m  ON m.id_usuario = u.id_usuario
+INNER JOIN tipos_membresia tm ON tm.id_tipo_membresia = m.id_tipo_membresia
+WHERE tm.nombre = 'Diaria'
+GROUP BY u.id_usuario, u.nombre, u.apellidos
+HAVING COUNT(*) > 10
+ORDER BY veces DESC;
