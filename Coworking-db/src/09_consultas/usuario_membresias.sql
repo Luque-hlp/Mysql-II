@@ -135,3 +135,27 @@ WHERE tm.nombre = 'Diaria'
 GROUP BY u.id_usuario, u.nombre, u.apellidos
 HAVING COUNT(*) > 10
 ORDER BY veces DESC;
+
+-- 18. Mostrar usuarios cuya membresia vence en los proximos 7 dias.
+SELECT u.id_usuario, u.nombre, u.apellidos, m.fecha_fin,
+       DATEDIFF(m.fecha_fin, CURDATE()) AS dias_restantes
+FROM usuarios u
+INNER JOIN membresias m ON m.id_usuario = u.id_usuario
+WHERE m.estado = 'Activa'
+  AND m.fecha_fin BETWEEN CURDATE() AND CURDATE() + INTERVAL 7 DAY
+ORDER BY m.fecha_fin;
+ 
+-- 19. Listar usuarios que se registraron en el ultimo mes.
+SELECT id_usuario, nombre, apellidos, fecha_registro
+FROM usuarios
+WHERE fecha_registro >= CURDATE() - INTERVAL 1 MONTH
+ORDER BY fecha_registro DESC;
+ 
+-- 20. Mostrar usuarios que nunca han asistido al coworking (0 accesos).
+SELECT u.id_usuario, u.nombre, u.apellidos
+FROM usuarios u
+WHERE NOT EXISTS (
+    SELECT 1 FROM accesos a
+    WHERE a.id_usuario = u.id_usuario AND a.resultado = 'Permitido'
+)
+ORDER BY u.id_usuario;
