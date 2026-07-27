@@ -52,3 +52,10 @@ INNER JOIN empresas e ON e.id_empresa = u.id_empresa
 WHERE e.id_empresa = 1
 ORDER BY u.apellidos;
 
+-- 8. Contar cuantos usuarios estan asociados a cada empresa.
+SELECT e.nombre AS empresa, COUNT(u.id_usuario) AS total_empleados
+FROM empresas e
+LEFT JOIN usuarios u ON u.id_empresa = e.id_empresa
+GROUP BY e.id_empresa, e.nombre
+ORDER BY total_empleados DESC;
+
