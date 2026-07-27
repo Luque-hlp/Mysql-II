@@ -64,3 +64,14 @@ SELECT u.id_usuario, u.nombre, u.apellidos
 FROM usuarios u
 WHERE NOT EXISTS (SELECT 1 FROM reservas r WHERE r.id_usuario = u.id_usuario)
 ORDER BY u.id_usuario;
+
+-- 10. Mostrar usuarios con mas de 5 reservas activas en el mes.
+SELECT u.id_usuario, u.nombre, u.apellidos, COUNT(r.id_reserva) AS reservas_mes
+FROM usuarios u
+INNER JOIN reservas r ON r.id_usuario = u.id_usuario
+WHERE r.estado IN ('Pendiente', 'Confirmada')
+  AND MONTH(r.fecha_hora_inicio) = MONTH(CURDATE())
+  AND YEAR(r.fecha_hora_inicio) = YEAR(CURDATE())
+GROUP BY u.id_usuario, u.nombre, u.apellidos
+HAVING COUNT(r.id_reserva) > 5
+ORDER BY reservas_mes DESC;
