@@ -88,3 +88,12 @@ INNER JOIN membresias m ON m.id_usuario = u.id_usuario
 GROUP BY u.id_usuario, u.nombre, u.apellidos
 HAVING COUNT(DISTINCT m.id_tipo_membresia) > 2
 ORDER BY tipos_distintos DESC;
+
+-- 13. Listar usuarios que han gastado mas de $500.000 en reservas.
+SELECT u.id_usuario, u.nombre, u.apellidos, SUM(r.monto_total) AS gasto_reservas
+FROM usuarios u
+INNER JOIN reservas r ON r.id_usuario = u.id_usuario
+WHERE r.estado IN ('Confirmada', 'Completada')
+GROUP BY u.id_usuario, u.nombre, u.apellidos
+HAVING SUM(r.monto_total) > 500000
+ORDER BY gasto_reservas DESC;
