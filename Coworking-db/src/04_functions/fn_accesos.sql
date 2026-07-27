@@ -1,5 +1,3 @@
-
-
 USE coworking_db;
 
 DROP FUNCTION IF EXISTS fn_ultimo_acceso;
