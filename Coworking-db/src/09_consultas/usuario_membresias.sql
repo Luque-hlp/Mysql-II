@@ -59,3 +59,8 @@ LEFT JOIN usuarios u ON u.id_empresa = e.id_empresa
 GROUP BY e.id_empresa, e.nombre
 ORDER BY total_empleados DESC;
 
+-- 9. Mostrar usuarios que nunca han hecho una reserva.
+SELECT u.id_usuario, u.nombre, u.apellidos
+FROM usuarios u
+WHERE NOT EXISTS (SELECT 1 FROM reservas r WHERE r.id_usuario = u.id_usuario)
+ORDER BY u.id_usuario;
