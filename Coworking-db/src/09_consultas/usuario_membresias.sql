@@ -37,3 +37,11 @@ FROM tipos_membresia tm
 LEFT JOIN membresias m ON m.id_tipo_membresia = tm.id_tipo_membresia
 GROUP BY tm.id_tipo_membresia, tm.nombre
 ORDER BY total_usuarios DESC;
+
+-- 6. Mostrar el top 10 de usuarios con mas antiguedad en el coworking.
+SELECT id_usuario, nombre, apellidos, fecha_registro,
+       DATEDIFF(CURDATE(), fecha_registro) AS dias_antiguedad
+FROM usuarios
+ORDER BY fecha_registro ASC
+LIMIT 10;
+
