@@ -2,7 +2,7 @@ USE coworking_db;
 
 DROP FUNCTION IF EXISTS fn_ultimo_acceso;
 DELIMITER $$
-CREATE FUNCTION fn_ultimo_acceso(p_id_usuario INT)
+CREATE FUNCTION fn_ultimo_acceso(p_id_usuario INT) --p_ es parametro
 RETURNS DATETIME
 READS SQL DATA
 BEGIN

@@ -7,8 +7,8 @@
 
 DROP DATABASE IF EXISTS coworking_db;
 CREATE DATABASE coworking_db
-    CHARACTER SET utf8mb4
-    COLLATE utf8mb4_unicode_ci;
+    CHARACTER SET utf8mb4 -- que tipo de letras y simbolos puedo usar
+    COLLATE utf8mb4_unicode_ci; 
 USE coworking_db;
 
 
