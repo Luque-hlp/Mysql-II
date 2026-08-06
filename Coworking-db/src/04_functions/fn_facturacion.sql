@@ -88,10 +88,10 @@ CREATE FUNCTION fn_generar_numero_factura()
 RETURNS VARCHAR(20)
 READS SQL DATA
 BEGIN
-    DECLARE v_anio       INT;
+    DECLARE v_año       INT;
     DECLARE v_consecutivo INT DEFAULT 0;
 
-    SET v_anio = YEAR(CURDATE());
+    SET v_año = YEAR(CURDATE());
 
     SELECT COALESCE(MAX(CAST(SUBSTRING_INDEX(numero_factura, '-', -1) AS UNSIGNED)), 0)
       INTO v_consecutivo

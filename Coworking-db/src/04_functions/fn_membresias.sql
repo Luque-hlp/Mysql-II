@@ -7,6 +7,8 @@ RETURNS BOOLEAN
 READS SQL DATA
 BEGIN
     DECLARE v_total INT DEFAULT 0;
+    DECLARE fecha_inicio DATE; -- declaro la fecha inicio y la fecha de vencimiento
+    DECLARE fecha_vencimiento DATE;
 
     SELECT COUNT(*) INTO v_total
     FROM membresias
